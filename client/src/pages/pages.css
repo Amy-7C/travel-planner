@@ -1,0 +1,99 @@
+/*No Trips Page*/
+.no-trips-img {
+  text-align: center;
+  font-size: 25px;
+  margin-top: 25vh;
+}
+
+.no-trips-img img {
+  display: block;
+  margin: 80px auto 0 auto;
+}
+
+/*Landing*/
+.main {
+  justify-content: center;
+  flex-direction: column;
+  overflow-y: auto;
+  height: calc(100vh - 73px);
+}
+
+.main-column-wrapper {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.landingpage-img img { 
+  width: 1200px;
+  height: 800px;
+  position: relative;
+  z-index: -2;
+}
+
+.landingpage-img {
+  width: 1200px;
+  height: 800px;
+  box-shadow: inset 20px 20px 200px 70px #292929;
+}
+
+.text-over-main div {
+  width: 790px;
+  height: 240px;
+  position: absolute;
+  color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 50px;
+  text-align: center;
+}
+
+.text-over-main button {
+  position: absolute;
+  top: 60%;
+  left: 47%;
+  background-color: white;
+  border-radius: 5px;
+  color: #4F4F4F;
+  border: 0px;
+  width: 112px;
+  height: 45px;
+}
+
+.text-over-main button:hover {
+  cursor: pointer;
+  background-color: #F5F5F5;
+}
+
+/*Login*/
+
+.login-wrapper, .signup-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 500px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+button.submit {
+  margin-top: 20px;
+}
+
+.page-not-found {
+  text-align: center;
+  font-size: 25px;
+  margin-top: 25vh;
+}
+
+.mytrips {
+  height: calc(100vh - 72px);
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.mytrips-wrapper {
+  width: 800px;
+}
