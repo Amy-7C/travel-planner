@@ -37,7 +37,7 @@ export function Login({ setToken, token }) {
   }
 
   if (token) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/mytrips" replace />;
   }
   
   return(

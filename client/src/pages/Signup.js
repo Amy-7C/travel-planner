@@ -38,7 +38,7 @@ export function Signup({ token, setToken }) {
   }
 
   if (token) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/mytrips" replace />;
   }
 
   return(
