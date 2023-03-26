@@ -24,6 +24,7 @@ export function MyTrips() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [message, setMessage] = useState('');
 
   const fetchData = async () => {
     await fetch('http://localhost:9000/api/trips', {
@@ -47,6 +48,7 @@ export function MyTrips() {
       <div className="mytrips">
         <div className="mytrips-wrapper">
           <Button onClick={handleOpen} variant="contained">Add Trip</Button>
+          <span style={{color: 'red', fontWeight: 'bold', padding:'10px'}}>{message}</span>
           <Modal
             open={open}
             onClose={handleClose}
@@ -55,7 +57,7 @@ export function MyTrips() {
           >
           <AddTripForm style={style} fetchData={fetchData} handleClose={handleClose}/>
           </Modal>
-          <TripList trips={trips} />
+          <TripList trips={trips} token={token} setMessage={setMessage} fetchData={fetchData}/>
         </div>
       </div>
     )
@@ -63,6 +65,7 @@ export function MyTrips() {
 
   return(
     <div>
+      <span style={{color: 'red', fontWeight: 'bold', padding:'10px'}}>{message}</span>
       <div className="no-trips-img">
         <img src={require('../assets/no_trips.png')} width={800} alt="no-trips"/>
         <p>No trips yet :(</p>
