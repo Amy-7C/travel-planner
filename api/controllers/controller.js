@@ -115,12 +115,26 @@ async function getOneTrip(req, res) {
   }
 };
 
+async function deleteTrip (req, res) {
+  const deleteQuery = 'DELETE FROM trips WHERE u_id = $1 AND trip_id = $2';
+  try {
+    const rows = await db.query(deleteQuery, [req.user.id, req.params.id]);
+    if(rows.rowCount === 0) {
+      return res.status(404).send({'message': 'trip not found'});
+    }
+    return res.status(204).send({ message: 'deleted' });
+  } catch(error) {
+    return res.status(400).send({message: 'unable to delete'});
+  }
+};
+
 module.exports = {
   createUser, 
   login, 
   deleteUser, 
   createTrip, 
   getAllTrips, 
-  getOneTrip
+  getOneTrip, 
+  deleteTrip
 }
 

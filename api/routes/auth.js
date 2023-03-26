@@ -6,7 +6,6 @@ const checkAuth = require('../middleware/checkAuth.js');
 
 router.post('/signup', async (req, res) => {
   const { email, password } = req.body;
-  console.log(email, password);
   /* 
     validate if user exists
     if found return true

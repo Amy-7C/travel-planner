@@ -22,7 +22,7 @@ app.post('/api/users/login', controller.login);
 app.post('/api/trips', checkAuth.verifyToken, controller.createTrip);
 app.get('/api/trips', checkAuth.verifyToken, controller.getAllTrips);
 app.get('/api/trips/:id', checkAuth.verifyToken, controller.getOneTrip);
-
+app.post('/api/trips/:id', checkAuth.verifyToken, controller.deleteTrip)
 
 const port = process.env.PORT || 9000;
 app.listen(port, () => {
