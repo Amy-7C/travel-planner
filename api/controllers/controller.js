@@ -38,7 +38,7 @@ async function login (req, res) {
     if (!rows[0]) {
       return res.status(400).send({'message': 'The credentials you provided is incorrect'});
     }
-    console.log(rows[0])
+    // console.log(rows[0])
     const isMatch = bcrypt.compare(password, rows[0].password);
     if(!isMatch) {
       return res.status(400).send({ 'message': 'The password you provided is incorrect' });
