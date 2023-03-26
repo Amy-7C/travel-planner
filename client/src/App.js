@@ -37,7 +37,7 @@ export function App() {
               <BucketList />
             </ProtectedRoute>
           } /> */}
-        <Route path="/signup" element={<Signup token={ token }/>} />
+        <Route path="/signup" element={<Signup setToken={ setToken } token={ token }/>} />
         <Route path="/login" element={<Login setToken={ setToken } token={ token } />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
