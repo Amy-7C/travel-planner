@@ -4,7 +4,7 @@ import { Main } from "./pages/Main.js";
 import { MyTrips } from "./pages/MyTrips.js";
 import { Header } from './components/Header.js';
 // import { Explore } from './pages/Explore.js';
-import { BucketList } from './pages/BucketList.js';
+// import { BucketList } from './pages/BucketList.js';
 import { Login } from './pages/Login.js';
 import { Signup } from './pages/Signup.js';
 import './index.css';

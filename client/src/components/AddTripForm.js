@@ -8,6 +8,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
 import useToken from '../useToken';
 import './components.css';
+import { isRouteErrorResponse } from 'react-router-dom';
 
 async function createTrip(input, token) {
   return fetch('http://localhost:9000/api/trips', {
@@ -30,15 +31,19 @@ export function AddTripForm(props) {
   });
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
-  const [ error, setError ] = useState('');
+  const [ error, setError ] = useState([]);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setError('');
+    setError([]);
     let formattedStartDate = dayjs(startDate).format('YYYY-MM-DD');
     let formattedEndDate = dayjs(endDate).format('YYYY-MM-DD');
     if(formattedStartDate === "Invalid Date" || formattedEndDate === "Invalid Date") {
       setError('Dates must be selected.')
+      return;
+    } 
+    if (formattedEndDate < formattedStartDate) {
+      setError('End date must be later than the start date.')
       return;
     }
     const tripInfo = {
@@ -115,7 +120,7 @@ export function AddTripForm(props) {
             onChange={handleInputChange}
           /><br />
           <Button variant="text" type="submit" value="submit" form="addtrip-form">Submit</Button><br/>
-          <span style={{color: 'red'}}>{error}</span>
+          <div style={{color: 'red', maxWidth: '200px'}}>{error}</div>
         </form>
       </div>
     </Box>
