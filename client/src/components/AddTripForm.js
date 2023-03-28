@@ -113,7 +113,7 @@ export function AddTripForm(props) {
           <TextField
             required
             id="standard-basic" 
-            label="Country"
+            label="Country or State"
             variant="standard" 
             name="country"
             value={values.country}

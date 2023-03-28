@@ -13,6 +13,7 @@ import './pages/pages.css';
 import useToken from './useToken';
 import { ProtectedRoute } from './components/ProtectedRoute.js';
 import { PageNotFound } from './pages/PageNotFound';
+import { TripDetails } from './pages/TripDetails';
 
 export function App() {
   const { token, setToken } = useToken();
@@ -39,6 +40,7 @@ export function App() {
           } /> */}
         <Route path="/signup" element={<Signup setToken={ setToken } token={ token }/>} />
         <Route path="/login" element={<Login setToken={ setToken } token={ token } />} />
+        <Route path="/mytrips/:id" element={<TripDetails />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
