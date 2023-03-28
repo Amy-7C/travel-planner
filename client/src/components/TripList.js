@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import dayjs from 'dayjs';
 import { PropTypes } from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -43,6 +44,7 @@ export function TripList({trips, token, setMessage, fetchData}) {
       <Grid container spacing={2}>
         {trips.length > 0 && (
           trips.map(trip => (
+            <Link to={`/mytrips/${trip.trip_id}`}>
             <Box xs={12} key={trip.trip_id} marginRight="15px" marginTop="15px">
               <Item>
                 <div>
@@ -52,6 +54,7 @@ export function TripList({trips, token, setMessage, fetchData}) {
                 <button onClick={(e) => handleDelete(e, trip.trip_id)} style={{border: 'none', background: 'white'}}><DeleteIcon /></button>
               </Item>
             </Box>
+            </Link>
           ))
         )}
       </Grid>
