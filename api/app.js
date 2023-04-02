@@ -23,7 +23,9 @@ app.post('/api/trips', checkAuth.verifyToken, controller.createTrip);
 app.get('/api/trips', checkAuth.verifyToken, controller.getAllTrips);
 app.get('/api/trips/:id', checkAuth.verifyToken, controller.getOneTrip);
 app.post('/api/trips/:id', checkAuth.verifyToken, controller.deleteTrip)
-
+app.get('/api/trips/:id/days', checkAuth.verifyToken, controller.getAllDays);
+app.get('/api/days/:id/places', checkAuth.verifyToken, controller.getAllPlaces);
+app.post('/api/trips/:id/days', checkAuth.verifyToken, controller.createDay);
 const port = process.env.PORT || 9000;
 app.listen(port, () => {
   console.log(`App is listening on port ${port}`);

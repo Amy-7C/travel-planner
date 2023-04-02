@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS trips (
 
 CREATE TABLE IF NOT EXISTS days (
   day_id SERIAL NOT NULL PRIMARY KEY,
-  date DATE,
+  date DATE NOT NULL UNIQUE,
   trip_id INT REFERENCES trips(trip_id)
 );
 

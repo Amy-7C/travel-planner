@@ -128,6 +128,44 @@ async function deleteTrip (req, res) {
   }
 };
 
+async function getAllDays(req, res) {
+  const findQuery = `SELECT * FROM days where trip_id = $1`;
+  try {
+    const { rows } = await db.query(findQuery, [req.params.id]);
+    res.status(201).json(rows);
+  } catch(error) {
+    res.status(400).send(error);
+  }
+}
+
+async function createDay(req, res) {
+  const { date } = req.body;
+  const createQuery = `INSERT INTO
+    days(date, trip_id)
+    VALUES($1, $2)
+    `;
+    const values = [
+      date, 
+      req.params.id
+    ];
+    try {
+      const { rows } = await db.query(createQuery, values);
+      res.status(201).send(rows[0]);
+    } catch(error) {
+      res.status(400).send(error);
+    }
+};
+
+async function getAllPlaces(req, res) {
+  const findQuery = `SELECT * FROM places where day_id = $1`;
+  try {
+    const { rows } = await db.query(findQuery, [req.params.id]);
+    res.status(201).json(rows);
+  } catch(error) {
+    res.status(400).send(error);
+  }
+}
+
 module.exports = {
   createUser, 
   login, 
@@ -135,6 +173,9 @@ module.exports = {
   createTrip, 
   getAllTrips, 
   getOneTrip, 
-  deleteTrip
+  deleteTrip, 
+  getAllDays, 
+  createDay,
+  getAllPlaces
 }
 
