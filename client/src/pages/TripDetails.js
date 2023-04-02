@@ -7,9 +7,9 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { Days } from '../components/Days';
 
 async function createDay(input, token, id) {
-  console.log(input);
   return fetch(`http://localhost:9000/api/trips/${id}/days`, {
     method: 'POST', 
     headers: {
@@ -18,7 +18,7 @@ async function createDay(input, token, id) {
     }, 
     body: JSON.stringify(input)
   })
-  .then(data => data.json())
+  .then(data => data)
 }
 
 export function TripDetails() {
@@ -49,6 +49,7 @@ export function TripDetails() {
     })
     .then(res => res.json())
     .then(data => {
+      setTripInfo(data);
       return data;
     }) 
 
@@ -84,8 +85,8 @@ export function TripDetails() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const result = await createDay({date: date}, token, id);
-    if(result?.constraint === 'day_unique') console.log("already a date exists");
-    else console.log(result)
+    if(result?.constraint === 'day_unique') console.log("date already exists");
+    else fetchData();
   }
 
   useEffect(() => {
@@ -102,6 +103,7 @@ export function TripDetails() {
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Dates</InputLabel>
             <Select
+              style={{ width: '150px'}}
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={date}
@@ -116,6 +118,7 @@ export function TripDetails() {
         </form>
         <Button variant="contained" type="submit" value="submit" form="add-date-form">Plan a Day</Button>
       </div>
+      <Days days={days} />
     </div>
   )
 }
