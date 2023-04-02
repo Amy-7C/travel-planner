@@ -8,14 +8,29 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
+async function createDay(input, token, id) {
+  console.log(input);
+  return fetch(`http://localhost:9000/api/trips/${id}/days`, {
+    method: 'POST', 
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': token
+    }, 
+    body: JSON.stringify(input)
+  })
+  .then(data => data.json())
+}
+
 export function TripDetails() {
   const [tripInfo, setTripInfo] = useState({});
+  const [days, setDays] = useState([]);
   const { token, setToken } = useToken();
   const { id } = useParams();
   const [ date, setDate ] = useState('');
   const [ dateList, setDateList] = useState([]);
+
   const fetchData = async () => {
-    await fetch(`http://localhost:9000/api/trips/${id}`, {
+    const dayRes = await fetch(`http://localhost:9000/api/trips/${id}/days`, {
       headers: {
         'Content-Type': 'application/json',
         'x-auth-token': token
@@ -23,18 +38,41 @@ export function TripDetails() {
     })
     .then(res => res.json())
     .then(data => {
-      setTripInfo(data);
-      console.log(data)
-      createDateList(data.date_start, data.date_end);
+      return createDayList(data);
+    });
+
+    const tripInfoRes = await fetch(`http://localhost:9000/api/trips/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': token
+      }
     })
+    .then(res => res.json())
+    .then(data => {
+      return data;
+    }) 
+
+    createDateList(dayRes, tripInfoRes.date_start, tripInfoRes.date_end);
   }
 
-  const createDateList = (startDate, endDate) => {
+  const createDayList = (data) => {
+    const list = [];
+    for(const day of data) {
+      const value = dayjs(day.date).format('MMM D, YYYY');
+      list.push(value)
+    }
+    setDays(list);
+    return list;
+  }
+
+  const createDateList = (dayRes, startDate, endDate) => {
+    console.log(dayRes)
     const list = [];
     const diff = dayjs(endDate).diff(startDate, 'day');
     for(let i = 0; i <= diff; i++) {
       let value = dayjs(startDate).add(i, 'day').format('MMM D, YYYY');
-      list.push(value);
+      if(dayRes.includes(value)) continue;
+      else list.push(value);
     }
     setDateList(list);
   }
@@ -42,6 +80,13 @@ export function TripDetails() {
   const handleChange = (event) => {
     setDate(event.target.value);
   };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const result = await createDay({date: date}, token, id);
+    if(result?.constraint === 'day_unique') console.log("already a date exists");
+    else console.log(result)
+  }
 
   useEffect(() => {
     fetchData();
@@ -53,21 +98,23 @@ export function TripDetails() {
       <h2>{tripInfo.city}, {tripInfo.country}</h2>
       <h3>{dayjs(tripInfo.date_start).format('MMMM D -')}{dayjs(tripInfo.date_end).format('MMMM D, YYYY')}</h3>
       <div style={{display: 'flex', flexDirection: 'row'}}>
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Dates</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={date}
-            label="Dates"
-            onChange={handleChange}
-          > 
-            {dateList.map((date, i) => (
-              <MenuItem value={date} key={i}>{date}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <Button variant="contained">Plan a Day</Button>
+        <form id="add-date-form" onSubmit={handleSubmit}>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Dates</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={date}
+              label="Dates"
+              onChange={handleChange}
+            > 
+              {dateList.map((date, i) => (
+                <MenuItem value={date} key={i}>{date}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </form>
+        <Button variant="contained" type="submit" value="submit" form="add-date-form">Plan a Day</Button>
       </div>
     </div>
   )
