@@ -62,7 +62,11 @@ export function TripDetails() {
       const value = dayjs(day.date).format('MMM D, YYYY');
       list.push(value)
     }
+    list.sort((a,b) => (
+      dayjs(a).isAfter(dayjs(b)) ? 1 : -1
+    ));
     setDays(list);
+    console.log(days)
     return list;
   }
 
