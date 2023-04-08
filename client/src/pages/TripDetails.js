@@ -60,32 +60,41 @@ export function TripDetails() {
     const list = [];
     for(const day of data) {
       const value = dayjs(day.date).format('MMM D, YYYY');
-      list.push(value)
+      list.push({
+        ...day, 
+        date: value
+      });
     }
+
     list.sort((a,b) => (
-      dayjs(a).isAfter(dayjs(b)) ? 1 : -1
+      dayjs(a.date).isAfter(dayjs(b.date)) ? 1 : -1
     ));
+
     setDays(list);
-    console.log(days)
     return list;
   }
 
   const createDateList = (dayRes, startDate, endDate) => {
-    console.log(dayRes)
-    const list = [];
+    const list = []
+    if(dayRes && dayRes.length) {
+      for(const day of dayRes) {
+        list.push(day.date);
+      }
+    };
+
+    const result = [];
     const diff = dayjs(endDate).diff(startDate, 'day');
     for(let i = 0; i <= diff; i++) {
       let value = dayjs(startDate).add(i, 'day').format('MMM D, YYYY');
-      if(dayRes.includes(value)) continue;
-      else list.push(value);
+      if(dayRes && dayRes.length && !list.includes(value)) result.push(value)
     }
-    setDateList(list);
+    setDateList(result);
   }
-
+  
   const handleChange = (event) => {
     setDate(event.target.value);
   };
-
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     const result = await createDay({date: date}, token, id);
