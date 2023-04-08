@@ -21,7 +21,7 @@ export function Days({days}) {
 
   return(
     <div style={{marginTop: '20px', width: '60%'}}>
-      {days.map((day, index) => (
+      {days && days.map((day, index) => (
         <Accordion expanded={expanded === index} onChange={handleChange(index)} key={index}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -46,7 +46,7 @@ export function Days({days}) {
             </Typography>
           </AccordionDetails>
         </Accordion>
-      ))}
+      ))} 
     </div>
   )
 }

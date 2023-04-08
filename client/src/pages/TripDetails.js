@@ -87,6 +87,7 @@ export function TripDetails() {
     for(let i = 0; i <= diff; i++) {
       let value = dayjs(startDate).add(i, 'day').format('MMM D, YYYY');
       if(dayRes && dayRes.length && !list.includes(value)) result.push(value)
+      if(!dayRes.length) result.push(value)
     }
     setDateList(result);
   }
