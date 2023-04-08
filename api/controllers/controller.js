@@ -156,6 +156,66 @@ async function createDay(req, res) {
     }
 };
 
+async function deleteDay (req, res) {
+  //need to delete all places associated with a day
+  const deleteQuery = 'DELETE FROM days WHERE day_id = $1';
+  try {
+    const rows = await db.query(deleteQuery, [req.params.id]);
+    if(rows.rowCount === 0) {
+      return res.status(404).send({'message': 'trip not found'});
+    }
+    return res.status(204).send({ message: 'deleted' });
+  } catch(error) {
+    return res.status(400).send({message: 'unable to delete'});
+  }
+};
+
+async function createPlace(req, res) {
+  const { address, name, category } = req.body;
+  const createQuery = `INSERT INTO
+    places(address, name, category, day_id)
+    VALUES($1, $2, $3, $4)
+    `;
+    const values = [
+      address, 
+      name, 
+      category,
+      req.params.id
+    ];
+    try {
+      const { rows } = await db.query(createQuery, values);
+      res.status(201).send(rows[0]);
+    } catch(error) {
+      res.status(400).send(error);
+    }
+};
+
+async function deletePlace (req, res) {
+  const deleteQuery = 'DELETE FROM places WHERE place_id = $1';
+  try {
+    const rows = await db.query(deleteQuery, [req.params.id]);
+    if(rows.rowCount === 0) {
+      return res.status(404).send({'message': 'trip not found'});
+    }
+    return res.status(204).send({ message: 'deleted' });
+  } catch(error) {
+    return res.status(400).send({message: 'unable to delete'});
+  }
+};
+
+async function deleteAllPlaces(req, res) {
+  const deleteQuery = `DELETE FROM places WHERE day_id = $1`;
+  try {
+    const rows = await db.query(deleteQuery, [req.dayId]);
+    if(rows.rowCount === 0) {
+      return res.status(404).send({'message': 'trip not found'});
+    }
+    return res.status(204).send({ message: 'deleted' });
+  } catch(error) {
+    return res.status(400).send({message: 'unable to delete'});
+  }
+}
+
 async function getAllPlaces(req, res) {
   const findQuery = `SELECT * FROM places where day_id = $1`;
   try {
@@ -176,6 +236,9 @@ module.exports = {
   deleteTrip, 
   getAllDays, 
   createDay,
-  getAllPlaces
+  getAllPlaces, 
+  deleteDay, 
+  createPlace, 
+  deletePlace
 }
 
